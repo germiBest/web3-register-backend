@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     }
     const { wallet_address } = user; // eth wallet public address which will receive the token
 
-    if (user?.reward_point < redeemPointsConfig.redeem_nft)
+    if (user.reward_point < redeemPointsConfig.redeem_nft)
       return res.status(419).json({ status: false, message: 'Not enough points to redeem.' });
 
     const minter = await getClient(ETH_NETWORK, OWNER_PRIVATE_KEY);
@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
       throw new error(500, 'Please set token id in app setting table!');
     }
 
-    const currentTokenId = token_master?.setting_value || 0;
+    const currentTokenId = token_master.setting_value || 0;
     const tokenId = parseInt(currentTokenId) || 0;
     const newTokenId = tokenId + 1; // Increment token by 1;
 
@@ -42,9 +42,9 @@ module.exports = async (req, res) => {
         contractAddress: SMART_CONTRACT_ADDRESS,
       },
     ]);
-    if (mintResponse && mintResponse?.results && mintResponse?.results?.length > 0) {
-      const mintRecord = mintResponse?.results[0];
-      const mintTokenId = mintRecord?.token_id;
+    if (mintResponse && mintResponse.results && mintResponse.results.length > 0) {
+      const mintRecord = mintResponse.results[0];
+      const mintTokenId = mintRecord.token_id;
 
       await knex('app_setting_master')
         .update({ setting_value: `${newTokenId}` })
@@ -68,6 +68,6 @@ module.exports = async (req, res) => {
     }
   } catch (error) {
     console.log('Mint NFT Exception', error);
-    res.status(500).json({ status: false, message: error?.message });
+    res.status(500).json({ status: false, message: error.message });
   }
 };

@@ -38,7 +38,7 @@ ReferralCode.prototype.creditRewardPoint = async function (user, reward_type, re
 ReferralCode.prototype.onCreateAccount = async function (user) {
   try {
     const reward_point = parseInt(config.credit.on_new_account || 0);
-    if (!reward_point || !user?.id) return false;
+    if (!reward_point || !user.id) return false;
     await this.creditRewardPoint(user, 'create-account', reward_point);
   } catch (e) {
     console.error(e);
@@ -80,7 +80,7 @@ ReferralCode.prototype.onReferralSignup = async function (referred_user_id, refe
 };
 
 ReferralCode.prototype.onRedeem = async function (user, mintTokenId) {
-  const reward_point = parseInt(config?.redeemPointsConfig.redeem_nft || 0);
+  const reward_point = parseInt(config.redeemPointsConfig.redeem_nft || 0);
   if (!reward_point || !user.id) return false;
 
   const payload = {
